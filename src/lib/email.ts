@@ -4,10 +4,24 @@ import { Resend } from "resend";
  * Transactional email via Resend — verification links and magic links for the
  * MCP gateway. Sender domain must be verified in your Resend account and set in
  * EMAIL_FROM.
+ *
+ * DEV FALLBACK: when RESEND_API_KEY is unset, emails are NOT sent — the link is
+ * logged to the server console instead, so local email/password sign-up works
+ * without an email provider. Set RESEND_API_KEY in production.
  */
-const resend = new Resend(process.env.RESEND_API_KEY);
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
 const FROM = process.env.EMAIL_FROM ?? "quantakrypto <no-reply@quantakrypto.com>";
+
+async function deliver(to: string, subject: string, html: string, link: string): Promise<void> {
+  if (!resend) {
+    // eslint-disable-next-line no-console
+    console.log(`[email:dev] no RESEND_API_KEY — would send "${subject}" to ${to}\n  link: ${link}`);
+    return;
+  }
+  await resend.emails.send({ from: FROM, to, subject, html });
+}
 
 function shell(title: string, body: string, cta: { label: string; url: string }): string {
   return `<!doctype html><html><body style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b0d12;color:#e6e9ef;margin:0;padding:32px">
@@ -23,27 +37,27 @@ function shell(title: string, body: string, cta: { label: string; url: string })
 }
 
 export async function sendVerificationEmail(to: string, url: string): Promise<void> {
-  await resend.emails.send({
-    from: FROM,
+  await deliver(
     to,
-    subject: "Verify your email to access the quantakrypto MCP",
-    html: shell(
+    "Verify your email to access the quantakrypto MCP",
+    shell(
       "Confirm your email",
       "Confirm this address to finish creating your quantakrypto MCP account. Once verified, your AI coding agent can connect to the hosted MCP server.",
       { label: "Verify email", url },
     ),
-  });
+    url,
+  );
 }
 
 export async function sendMagicLinkEmail(to: string, url: string): Promise<void> {
-  await resend.emails.send({
-    from: FROM,
+  await deliver(
     to,
-    subject: "Your quantakrypto MCP sign-in link",
-    html: shell(
+    "Your quantakrypto MCP sign-in link",
+    shell(
       "Sign in to quantakrypto",
       "Click below to sign in to your quantakrypto MCP account. This link is single-use and expires shortly.",
       { label: "Sign in", url },
     ),
-  });
+    url,
+  );
 }
