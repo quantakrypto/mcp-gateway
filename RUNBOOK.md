@@ -29,11 +29,8 @@ in the same process, so no separate resource server is needed.
    ```bash
    npm install
    ```
-   > **Dependency note.** This app needs `@quantakrypto/mcp` ≥ 0.5.0 (it uses the
-   > `createQuantakryptoServer` + `quantakryptoTools` exports). npm currently
-   > publishes **0.4.4**, so either publish 0.5.0 from `qproof-tools` first, or
-   > for local dev link the workspace copy:
-   > `npm install ../qproof-tools/packages/mcp` (or `npm link @quantakrypto/mcp`).
+   Pulls `@quantakrypto/mcp` (^0.5.0, published to npm with provenance) and its
+   `core`/`qprobe` deps.
 
 2. **Postgres** — either `docker compose up -d postgres`, or point
    `DATABASE_URL` at your existing instance.
