@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next dev -p 3333",
     "build": "next build",
-    "start": "next start -p 3333",
+    "start": "next start -p ${PORT:-3333}",
     "typecheck": "tsc --noEmit",
     "auth:generate": "better-auth generate --output src/lib/auth-schema.sql",
     "auth:migrate": "better-auth migrate"

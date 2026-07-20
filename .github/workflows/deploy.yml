@@ -1,0 +1,47 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit
+      - name: Write env
+        run: printf '%s' "$ENV_PRODUCTION" > .env
+        env:
+          ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
+      - run: npm run build
+      - name: Copy build to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # src + tsconfig are shipped so the Better Auth CLI can load the auth
+          # config to run migrations; .next/package/lock/config run the app.
+          source: ".next/**,src/**,package.json,package-lock.json,next.config.mjs,tsconfig.json,.env"
+          target: /var/www/qproof-mcp
+          overwrite: true
+      - name: Install, migrate, restart on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd /var/www/qproof-mcp
+            npm ci --omit=dev --no-audit
+            # Apply any Better Auth schema changes (idempotent).
+            set -a; . ./.env; set +a
+            npx --yes @better-auth/cli@latest migrate -y
+            export PORT=3210
+            pm2 delete qproof-mcp || true
+            pm2 start "npm run start" --name qproof-mcp
+            pm2 save
