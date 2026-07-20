@@ -5,3 +5,5 @@ node_modules/
 *.log
 next-env.d.ts
 src/lib/auth-schema.sql
+.DS_Store
+*.tsbuildinfo
