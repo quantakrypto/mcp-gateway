@@ -20,7 +20,14 @@ async function deliver(to: string, subject: string, html: string, link: string):
     console.log(`[email:dev] no RESEND_API_KEY — would send "${subject}" to ${to}\n  link: ${link}`);
     return;
   }
-  await resend.emails.send({ from: FROM, to, subject, html });
+  // Resend does NOT throw on API errors (bad key, unverified domain, …) — it
+  // returns { error }. Surface it so a failed send isn't silent.
+  const res = await resend.emails.send({ from: FROM, to, subject, html });
+  if (res.error) {
+    throw new Error(`Resend rejected "${subject}" to ${to}: ${res.error.message ?? JSON.stringify(res.error)}`);
+  }
+  // eslint-disable-next-line no-console
+  console.log(`[email] sent "${subject}" to ${to} (id ${res.data?.id ?? "?"})`);
 }
 
 function shell(title: string, body: string, cta: { label: string; url: string }): string {
