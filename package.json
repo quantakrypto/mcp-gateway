@@ -1,0 +1,33 @@
+{
+  "name": "quantakrypto-mcp-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hosted, OAuth-gated multi-tenant gateway for the quantakrypto MCP server. Better Auth (Google + GitHub + email) issues 30-day access tokens; the MCP endpoint runs behind withMcpAuth in the same process.",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3333",
+    "build": "next build",
+    "start": "next start -p 3333",
+    "typecheck": "tsc --noEmit",
+    "auth:generate": "better-auth generate --output src/lib/auth-schema.sql",
+    "auth:migrate": "better-auth migrate"
+  },
+  "dependencies": {
+    "@quantakrypto/mcp": "^0.5.0",
+    "better-auth": "^1.5.0",
+    "next": "^15.1.0",
+    "pg": "^8.13.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "resend": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/pg": "^8.11.10",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
