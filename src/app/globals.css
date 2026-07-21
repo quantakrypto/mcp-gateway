@@ -118,6 +118,15 @@
     letter-spacing: -0.03em;
     line-height: 1;
   }
+
+  /* Tailwind v4 preflight leaves native buttons on the default cursor; restore
+     the expected pointer on interactive controls. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  label[for],
+  summary {
+    cursor: pointer;
+  }
 }
 
 @layer utilities {
