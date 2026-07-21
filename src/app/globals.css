@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ *  quantakrypto — "Lattice" design system (ported from the website)
+ *  A light, scientific "paper" field: cool off-white background under a
+ *  faint graph-paper grid, near-black ink for type, a single decisive
+ *  indigo for action and structure, and a reserved signal-red for the
+ *  hard problem / threat cues.
+ * ------------------------------------------------------------------ */
+
+@theme {
+  /* Surfaces */
+  --color-bg: #eaedf2;
+  --color-bg-soft: #f1f3f7;
+  --color-surface: #ffffff;
+  --color-surface-2: #f7f8fb;
+  --color-surface-3: #eef1f6;
+
+  /* Hairlines */
+  --color-line: #cdd4df;
+  --color-line-strong: #0e1626;
+
+  /* Text */
+  --color-fg: #0e1626;
+  --color-muted: #5b6678;
+  --color-faint: #8a93a3;
+
+  /* Accents — indigo system + reserved signal-red */
+  --color-cyan: #4733e0;
+  --color-cyan-bright: #5b49f0;
+  --color-cyan-deep: #2f1fc4;
+  --color-violet: #6a5ad6;
+  --color-violet-deep: #4733e0;
+  --color-amber: #b4924e;
+  --color-coral: #e0364d;
+
+  /* Semantic Lattice tokens */
+  --color-paper: #eaedf2;
+  --color-ink: #0e1626;
+  --color-grid: #cdd4df;
+  --color-indigo: #4733e0;
+  --color-red: #e0364d;
+
+  /* Typography */
+  --font-sans: var(--font-body-face), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), var(--font-body-face), sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Radii — near-zero everywhere */
+  --radius-xs: 0px;
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 3px;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--color-bg);
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Faint graph-paper grid behind the whole app (the Lattice field). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+    background-size: 34px 34px;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(130% 110% at 50% 0%, #000 50%, transparent 100%);
+    mask-image: radial-gradient(130% 110% at 50% 0%, #000 50%, transparent 100%);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+
+  ::selection {
+    background: var(--color-indigo);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2.5px solid var(--color-indigo);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+}
+
+@layer utilities {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-indigo);
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+    background-size: 30px 30px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 0%, transparent 80%);
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 0%, transparent 80%);
+  }
+
+  .glow-cyan {
+    box-shadow:
+      0 0 0 1px var(--color-ink),
+      0 22px 60px -32px rgba(14, 22, 38, 0.45);
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+}

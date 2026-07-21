@@ -30,16 +30,18 @@ async function deliver(to: string, subject: string, html: string, link: string):
   console.log(`[email] sent "${subject}" to ${to} (id ${res.data?.id ?? "?"})`);
 }
 
+// quantakrypto "Lattice" palette (inline for email-client compatibility):
+// paper #eaedf2, white surface #ffffff, ink #0e1626, muted #5b6678, indigo #4733e0.
 function shell(title: string, body: string, cta: { label: string; url: string }): string {
-  return `<!doctype html><html><body style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b0d12;color:#e6e9ef;margin:0;padding:32px">
-    <div style="max-width:480px;margin:0 auto">
-      <p style="font-family:ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:#6ee7e7;font-size:12px">quantakrypto</p>
-      <h1 style="font-size:22px;margin:8px 0 16px">${title}</h1>
-      <p style="color:#aab2c0;line-height:1.6">${body}</p>
+  return `<!doctype html><html><body style="font-family:'Hanken Grotesk',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#eaedf2;color:#0e1626;margin:0;padding:32px">
+    <div style="max-width:480px;margin:0 auto;background:#ffffff;border:1px solid #cdd4df;padding:32px">
+      <p style="font-family:ui-monospace,'JetBrains Mono',monospace;letter-spacing:.2em;text-transform:uppercase;color:#4733e0;font-size:12px;margin:0">quantakrypto</p>
+      <h1 style="font-size:22px;letter-spacing:-0.02em;margin:10px 0 16px;color:#0e1626">${title}</h1>
+      <p style="color:#5b6678;line-height:1.6;margin:0">${body}</p>
       <p style="margin:28px 0">
-        <a href="${cta.url}" style="display:inline-block;background:#4f46e5;color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:600">${cta.label}</a>
+        <a href="${cta.url}" style="display:inline-block;background:#4733e0;color:#ffffff;text-decoration:none;padding:12px 24px;font-weight:600;font-family:ui-monospace,monospace;font-size:14px">${cta.label}</a>
       </p>
-      <p style="color:#6b7280;font-size:12px;line-height:1.6">If you didn’t request this, you can ignore this email. The link expires shortly.</p>
+      <p style="color:#8a93a3;font-size:12px;line-height:1.6;margin:0">If you didn’t request this, you can ignore this email. The link expires shortly.</p>
     </div></body></html>`;
 }
 
