@@ -77,6 +77,20 @@ export const auth = betterAuth({
       },
     }),
   ],
+
+  // Federate the session with quantakrypto.com (shared account system). In
+  // production the cookie is scoped to `.quantakrypto.com` so a sign-in on
+  // either subdomain is recognised on the other; omitted on localhost.
+  advanced: (process.env.BETTER_AUTH_URL ?? "").includes("quantakrypto.com")
+    ? { crossSubDomainCookies: { enabled: true, domain: ".quantakrypto.com" } }
+    : undefined,
+  trustedOrigins: [
+    "https://quantakrypto.com",
+    "https://www.quantakrypto.com",
+    "https://mcp.quantakrypto.com",
+    "http://localhost:3000",
+    "http://localhost:3333",
+  ],
 });
 
 export type Auth = typeof auth;
