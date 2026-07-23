@@ -74,15 +74,6 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   if (typeof message?.method === "string" && PUBLIC_METHODS.has(message.method)) {
-    // Compat shim: the pinned @quantakrypto/mcp (0.5.0) doesn't implement
-    // resources/templates/list yet (fixed upstream after 0.5.0), so it returns
-    // -32601, which trips discovery clients and MCP directory health checks. We
-    // expose no URI templates, so answer with an empty list here. Remove once
-    // this app upgrades to an @quantakrypto/mcp version that handles it natively.
-    if (message.method === "resources/templates/list") {
-      const id = (message as { id?: string | number | null }).id ?? null;
-      return Response.json({ jsonrpc: "2.0", id, result: { resourceTemplates: [] } });
-    }
     return dispatch(message);
   }
 
