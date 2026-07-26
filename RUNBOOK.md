@@ -77,8 +77,9 @@ URL; they run the same flow.
 - [ ] Google/GitHub redirect URIs are the exact production URLs (no wildcards).
 - [ ] Resend sender domain is verified (SPF/DKIM) so mail isn't spoofable.
 - [ ] **Rate limiting / quotas** on `/mcp` per token — a hosted MCP burns your
-      compute. Better Auth has built-in rate limiting; also cap per-tenant
-      tool-calls (TODO below).
+      compute. Enable Better Auth's built-in rate limiting and enforce a request
+      cap at the reverse proxy; per-tenant tool-call metering is a roadmap item
+      (see Follow-ups below).
 - [ ] Postgres is not internet-exposed; backups enabled.
 - [ ] Token revocation path tested (Better Auth account/session APIs).
 
@@ -92,5 +93,3 @@ URL; they run the same flow.
 - **Brand the `/sign-in` page** to match quantakrypto.com.
 - Replace the local HTTP-safe tool denylist in `src/lib/mcp-server.ts` with the
   package's `gateHttpTools` export once published.
-
-See `qproof-tools/docs/design/hosted-mcp-oauth-gateway.md` for the full design.

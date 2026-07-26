@@ -98,3 +98,7 @@ RUNBOOK.md                     full setup, deploy, and security operations
 - **[quantakrypto/pqc-tools](https://github.com/quantakrypto/pqc-tools)** — the open-source toolkit this gateway serves (scanner, MCP, conformance battery, CI action). Apache-2.0.
 - **[`@quantakrypto/mcp`](https://github.com/quantakrypto/pqc-tools/tree/main/packages/mcp)** — the MCP server itself, and its `HOSTING.md` for the hosting design this gateway implements.
 - **[quantakrypto.com](https://quantakrypto.com)** — post-quantum audits, certification, tooling, training, and research.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).
